@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Share Location</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    button {
+      padding: 14px 25px;
+      font-size: 17px;
+      border: 0;
+      border-radius: 8px;
+      background: #1677e8;
+      color: white;
+    }
+    #status { margin-top: 25px; }
+  </style>
+</head>
+<body>
+
+<h2>Location Sharing</h2>
+<p>Please allow location access to share your current location.</p>
+
+<button onclick="getLocation()">Share My Location</button>
+<p id="status">Requesting location permission...</p>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbzC7roEtGtjrSSzyewTLwfCCudXevalHfknVl9MwFz6Q9HyJfkTF6v6ppCmSnsx61x7/exec";
+const TOKEN = "ilovekayraandhermother";
+
+function getLocation() {
+  const status = document.getElementById("status");
+
+  if (!navigator.geolocation) {
+    status.innerText = "Location is not supported by this browser.";
+    return;
+  }
+
+  status.innerText = "Please allow location access...";
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const accuracy = position.coords.accuracy;
+
+      const params = new URLSearchParams({
+        token: TOKEN,
+        lat: lat,
+        lng: lng,
+        accuracy: accuracy
+      });
+
+      const url = API_URL + "?" + params.toString();
+
+      fetch(url, {
+        method: "GET",
+        mode: "no-cors",
+        cache: "no-store"
+      });
+
+      status.innerText =
+        "Location submission initiated. Thank you!";
+    },
+    function(error) {
+      status.innerText =
+        "Location not shared. Please allow location permission and try again.";
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 30000,
+      maximumAge: 0
+    }
+  );
+}
+
+window.onload = getLocation;
+</script>
+
+</body>
+</html>
